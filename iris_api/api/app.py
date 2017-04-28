@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def about():
-    return 'This is the Iris API'
+    return 'This is the Iris API<br>'
 
 
 @app.route('/classify/<float:sl>/<float:sw>/<float:pl>/<float:pw>/')
@@ -19,5 +19,5 @@ def classify(sl, sw, pl, pw):
 
 
 if __name__ == '__main__':
-    model = pickle.load( open( "model.pkl", "rb" ) )
-    app.run(host = '0.0.0.0')
+    model = pickle.load(open("model.pkl", "rb"))
+    app.run(host='0.0.0.0')

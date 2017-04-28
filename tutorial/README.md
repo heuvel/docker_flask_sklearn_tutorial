@@ -7,7 +7,7 @@ The goal of this session is to run and modify a (REST) API that is able to class
 This Github repo (https://github.com/heuvel/docker_flask_sklearn_tutorial) contains the following components:
 - A Jupyter Notebook with Python code that fits a model on the iris dataset and saves the model into a Python Pickle file.
 - A small API that is able to classify an observation given on the endpoint `/classify` with the four variables as GET-params: `/classify/sl/sw/pl/pw`
-  - sl, sw, pl, pw are the four measurements that make up one observation: setal length, setal width, pedal length and pedal width
+  - sl, sw, pl, pw are the four measurements that make up one observation: sepal length, sepal width, pedal length and pedal width
   - Example of a call to the API with a measurement is `localhost:5000/classify/2.3/3.3/2.0/2.5/`
 - A Dockerfile that generates a Docker Image that is able to run this API
 
@@ -40,13 +40,13 @@ You'll see that it is not possible to reach the API outside of this docker image
 - Answer: `wget -qO- http://localhost:5000`
 
 The result is a small HTML file that is not well displayed on the terminal. The API only accepts requests from inside the container.
-You'll see that it is not possible to reach the API outside of this docker image. Therefore, we must open a port that allows us to communicate with the API. With the `--publish=[localport]:[hostport]` option in the `docker run` command we are able to open a port to the docker image.
+You'll see that it is not possible to reach the API outside of this docker container. Therefore, we must open a port that allows us to communicate with the API. With the `--publish=[localport]:[hostport]` option in the `docker run` command we are able to bind a port of the docker container to a port on the host machine.
 
 - Question: Stop the running API and try to run this API again with port 5000 published on port 5000.
-- Answer: not possible, docker image still exists
+- Answer: not possible, docker container still exists
 
 You will observe that Docker returns with an error: `docker: Error response from daemon: Conflict. The name "/api" is already in use by container`. We only stopped the API container, but we did not remove it. With the `docker ps -a` you can list all the
-docker images, also the 'stopped' containers. We first have to remove the container with the name `api` before we are allowed to run a new one. You can remove the container with the command `docker rm [containername]`
+docker containers, also the 'stopped' containers. We first have to remove the container with the name `api` before we are allowed to run a new one. You can remove the container with the command `docker rm [containername]`
 
 - Question: Remove the container with `docker rm api`
 - Answer: `docker rm api`
@@ -68,7 +68,7 @@ The API only returns a number ([0-2]). This number responds to one of the class 
 You will see that we only need a few lines of code to create an API that is able deploy our classifier as a service. The function `classify` is the function that is able to classify one observation.
 
 In the python environment, a dict (`model`) is available with three entries: 'classifier', 'target_names' and 'feature_names'. The object `model['classifier']` is a trained sklearn model. We can run the `predict`-function on the object to classify the measurement.
-The function returns an index. The index can be used to retrieve the label of the class with use of the `target_names` array inside `model`. For example: the code `print model['target_names'] [1]` returns the class label with index 1.
+The function returns an index. The index can be used to retrieve the label of the class with use of the `target_names` array inside `model`. For example: the code `print model['target_names'][1]` returns the class label with index 1.
 
 The feature names are also available in the model. If you want, you can also modify the API so it also returns the given measurements together with the feature names.
 
@@ -90,12 +90,12 @@ When we have a new version of our model or our backend, it is best practice to e
 
 The command `COPY api/* /opt/api/` copies all the necessary files (model, python api) into the docker image. With `CMD ["python", "app.py"]`, we tell the image to run `python app.py` when we run the container through `docker run`.
 
-Now we are going to rebuild the container. To build a container, we use the command `docker build .` (note the dot) in the directory where the `Dockerfile` is located. With the flag `-t`, we tag the image with a name. It is possible to overwrite the old container.
+Now we are going to rebuild the image. To build a image, we use the command `docker build .` (note the dot) in the directory where the `Dockerfile` is located. With the flag `-t`, we tag the image with a name. It is possible to overwrite the old image.
 
-- Question: rebuild the container with the name `heuvel/iris_api`
+- Question: rebuild the image with the name `heuvel/iris_api`
 - Answer: `docker build -t heuvel/iris_api .`. Note that all containers running this image should
 
-If the process is succesfull, you can run `docker images` to see that a new version of the image is available in your local repository.
+If the process is successful, you can run `docker images` to see that a new version of the image is available in your local repository.
 
 - Question: run the new version of the API without the volume mount
 - Answer: `docker run --name=api --publish=5000:5000 heuvel/iris_api`
