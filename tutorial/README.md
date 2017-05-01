@@ -123,13 +123,13 @@ The command `COPY api/* /opt/api/` copies all the necessary files (model, python
 
 Now we are going to rebuild the image. To build a image, we use the command `docker build .` (note the dot) in the directory where the `Dockerfile` is located. With the flag `-t`, we tag the image with a name. It is possible to overwrite the old image.
 
-- Question: rebuild the image with the name `[your name]/iris_api`, for example `joris/iris_api`
-- Answer: `docker build -t joris/iris_api .`. Note that all containers running this image should be started using that tag you have just created. In the example: `docker run ... joris/iris_api`
+- Question: rebuild the image with the name `[your name]_iris_api`, for example `joris_iris_api`
+- Answer: `docker build -t joris_iris_api .`. Note that all containers running this image should be started using that tag you have just created. In the example: `docker run ... joris_iris_api`
 
 If the process is successful, you can run `docker images` to see that a new version of the image is available in your local repository.
 
 - Question: run the new version of the API without the volume mount
-- Answer: `docker run --detach --name=api --publish=5000:5000 joris/iris_api`
+- Answer: `docker run --detach --name=api --publish=5000:5000 joris_iris_api`
 
 ## Extend the API
 You are free to extend the API with other information. Some suggestions:
