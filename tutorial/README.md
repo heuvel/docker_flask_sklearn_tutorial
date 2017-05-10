@@ -5,9 +5,10 @@ The Iris flower data set is a multivariate data set introduced by the British st
 The goal of this session is to run and modify a (REST) API that is able to classify an observation from the Iris dataset. This means that we give the API measurements of an observation and that the API will return one of the three classes from the Iris dataset.
 
 This Github repo (https://github.com/heuvel/docker_flask_sklearn_tutorial) contains the following components:
+
 - A Jupyter Notebook with Python code that fits a model on the iris dataset and saves the model into a Python Pickle file.
 - A small API that is able to classify an observation given on the endpoint `/classify` with the four variables as GET-params: `/classify/sl/sw/pl/pw`
-  - sl, sw, pl, pw are the four measurements that make up one observation: sepal length, sepal width, pedal length and pedal width
+  - sl, sw, pl, pw are the four measurements that make up one observation: sepal length, sepal width, petal length and petal width
   - Example of a call to the API with a measurement is `localhost:5000/classify/2.3/3.3/2.0/2.5/`
 - A Dockerfile that generates a Docker Image that is able to run this API
 
@@ -85,7 +86,7 @@ What you have learnt:
 * publish container ports to the outside world
 
 ## Modifying the API
-> To skip over this how-to-adapt-the-api section, just copy `api_final.py` over the file `api.py` in the directory `docker_flask_sklearn_tutorial/iris_api/api`
+> To skip over this how-to-adapt-the-api section, just copy `app_final.py` over the file `app.py` in the directory `docker_flask_sklearn_tutorial/iris_api/api`. You can do this either through the Jupyter file browser or via the terminal. If you want to do this through the terminal, exectute commands `mv app.py app.py.old` and `mv app_final.py app.py`. Subsequently, stop and execute the docker container again.
 
 The API now only returns a number ([0-2]). This number responds to one of the class labels. In this chapter, we are going to modify the API so it will return the label setosa, versicolor or virginica. Clone the GitHub repository with `git clone https://github.com/heuvel/docker_flask_sklearn_tutorial.git` and open the file `app.py`.
 You will see that we only need a few lines of code to create an API that is able deploy our classifier as a service. The function `classify` is the function that is able to classify one observation.
@@ -133,6 +134,7 @@ If the process is successful, you can run `docker images` to see that a new vers
 
 ## Extend the API
 You are free to extend the API with other information. Some suggestions:
+
 - Train a model on another dataset
 - Create an additional endpoint that returns more information about the trained model
 - Return an image of the iris class together with the class label.
